@@ -61,6 +61,7 @@ function renderEntry ($entry)
 <?php 
 if (isset($_GET['show']))
 {
+   echo '<a href="?tab=view"><div align="right" style="font-size: 18px; margin-right: 10px;">Back to other entries</div></a>';
    if (empty($_GET['show']))
       $_GET['show'] = $user;
    echo viewEntry($db->getEntry($_GET['show']));

@@ -7,7 +7,7 @@ function renderButton($button, $select)
    $html .= '<img src="' . $GLOBALS['app_config']['server']['url'] . '/img/' . $button;
    if ($button == $select)
       $html .= '-select';
-   $html .= '.png';
+   $html .= '.jpg';
    $html .= '" />';
    $html .= '</a>';
    

@@ -1,6 +1,26 @@
 <?php include 'inc/config.php'; ?>
-<?php print_r($_POST); ?>
-<fb:visible-to-connection>
-   <img src="<?php echo $config['server']['url']; ?>/img/tab-not-fan.jpg" />
-   <fb:else><a href="<?php echo $config['fb']['url']; ?>"><img src="<?php echo $config['server']['url']; ?>/img/main.jpg" /></a></fb:else>
-</fb:visible-to-connection>
+<style>
+#wrapper {
+   width: 520px;
+   margin: 0 auto; border: 0; padding: 0;
+   position: relative;
+}
+
+#non-fans {
+   width: 520px;
+   position: absolute; top: 0; left: 0;
+}
+</style>
+
+<div id="wrapper">
+   <fb:visible-to-connection>
+      <a href="<?php echo $config['fb']['url']; ?>">
+         <img src="<?php echo $config['server']['url']; ?>/img/tab-fan.jpg" />
+      </a>
+   <fb:else>
+      <div id="non-fans">
+         <img src="<?php echo $config['server']['url']; ?>/img/tab-not-fan.jpg" />
+      </div>
+   </fb:else>
+   </fb:visible-to-connection>
+</div>
