@@ -117,7 +117,7 @@ if (isset($error))
 
 <?php 
 if (isset($success)) {
-   echo '<fb:success><fb:message>You have successfully submitted an entry!</fb:succes></fb:message>';
+   echo '<fb:success><fb:message>You have successfully submitted an entry! You can view it <a href="?tab=view&show">here</a>.</fb:message></fb:success>';
 }
 ?>
 
