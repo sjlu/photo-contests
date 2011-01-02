@@ -1,4 +1,70 @@
-<?php 
+<?php
+function checkEmail($email)
+{
+   $isValid = true;
+   $atIndex = strrpos($email, "@");
+   if (is_bool($atIndex) && !$atIndex)
+   {
+      $isValid = false;
+   }
+   else
+   {
+      $domain = substr($email, $atIndex+1);
+      $local = substr($email, 0, $atIndex);
+      $localLen = strlen($local);
+      $domainLen = strlen($domain);
+      if ($localLen < 1 || $localLen > 64)
+      {
+         // local part length exceeded
+         $isValid = false;
+      }
+      else if ($domainLen < 1 || $domainLen > 255)
+      {
+         // domain part length exceeded
+         $isValid = false;
+      }
+      else if ($local[0] == '.' || $local[$localLen-1] == '.')
+      {
+         // local part starts or ends with '.'
+         $isValid = false;
+      }
+      else if (preg_match('/\\.\\./', $local))
+      {
+         // local part has two consecutive dots
+         $isValid = false;
+      }
+      else if (!preg_match('/^[A-Za-z0-9\\-\\.]+$/', $domain))
+      {
+         // character not valid in domain part
+         $isValid = false;
+      }
+      else if (preg_match('/\\.\\./', $domain))
+      {
+         // domain part has two consecutive dots
+         $isValid = false;
+      }
+      else if
+(!preg_match('/^(\\\\.|[A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/',
+                 str_replace("\\\\","",$local)))
+      {
+         // character not valid in local part unless 
+         // local part is quoted
+         if (!preg_match('/^"(\\\\"|[^"])+"$/',
+             str_replace("\\\\","",$local)))
+         {
+            $isValid = false;
+         }
+      }
+      if ($isValid && !(checkdnsrr($domain,"MX") || 
+ ↪checkdnsrr($domain,"A")))
+      {
+         // domain not found in DNS
+         $isValid = false;
+      }
+   }
+   return $isValid;
+}
+ 
 if (isset($_GET['submit'])) {
 
    if (empty($_POST['name']) || empty($_POST['email']) || empty($_POST['confirm_email']) || empty($_POST['reason']))
@@ -13,6 +79,10 @@ if (isset($_GET['submit'])) {
    {
       $error = 'The two emails you have given did not match, please try again.';
    }
+   else if (checkEmail($_POST['email']) === false)
+   {
+      $error = 'You did not provide us a valid email address.';
+   }
    else if (!in_array(strtolower(substr($_FILES['upfile']['name'], strrpos($_FILES['upfile']['name'], '.') + 1)), array('gif','png','jpg')))
    {
       $error = 'The file you gave us does not seem to be an image.';
@@ -24,27 +94,45 @@ if (isset($_GET['submit'])) {
    }
    else
    {
-      rename($_FILES['upfile']['tmp_name'], 'user_content/' . $_POST['fb_sig_user'] . '.' . strtolower(substr($_FILES['upfile']['name'], strrpos($_FILES['upfile']['name'], '.') + 1)));
-      $db->addEntry($_POST['fb_sig_user'],$_POST['name'],$_POST['email'],$_POST['reason']);
+      $ext =  strtolower(substr($_FILES['upfile']['name'], strrpos($_FILES['upfile']['name'], '.') + 1));
+      rename($_FILES['upfile']['tmp_name'], 'user_content/' . $_POST['uid'] . '.' . $ext);
+      $db->addEntry($_POST['uid'],$ext, $_POST['name'],$_POST['email'],$_POST['reason']);
+//      $db->Raw("INSERT INTO `entries` (`uid`,`name`,`email`,`reason`,`mod_status`) VALUES ('$_POST[uid]','$_POST[name]','$_POST[email]','$_POST[reason]','0')");
       header('Location: ' . $config['fb']['url'] . '/?tab=enter&success');
    }
 
-   // This is where we need to add the entry into the database.
-   // It have id (auto-incre), uid, name, email, reason, mod_status
-
+}
+else if (isset($_GET['delete']))
+{
+   $db->deleteEntry($user);
 }
 ?>
 
 <?php
 if (isset($error))
 {
-   echo '<fb:error><fb:message>' . $error . '</fb:message></fb:error>';
+   echo '<fb:error><fb:message>ERROR: ' . $error . '</fb:message></fb:error>';
+}
+?>
+
+<?php 
+if (isset($success)) {
+   echo '<fb:success><fb:message>You have successfully submitted an entry!</fb:succes></fb:message>';
 }
 ?>
 
 <?php if (!isset($success)) { ?>
 
-<?php if ($db->checkEntryExists($_POST['fb_sig_user'])) { echo '<fb:error><fb:message>You have already submitted an entry!</fb:message></fb:error>'; } else { ?>
+<?php 
+if ($db->checkEntryExists($user)) { 
+   echo '<fb:dialog id="confirm_delete" cancel_button=1>';
+   echo '<fb:dialog-title>Are you sure you want to delete your entry?</fb:dialog-title>';
+   echo '<fb:dialog-content><div style="font-weight: bold; font-size: 14px">Once it has been deleted, it cannot be undone. You can always submit a new entry though...</div></fb:dialog-content>';
+   echo '<fb:dialog-button type="button" value="Yes, I\'m sure." href="?tab=enter&delete" />';
+   echo '</fb:dialog>';
+   echo '<fb:error><fb:message>You have already submitted an entry! You can either <a href="?tab=view&show">view it</a> or <a clicktoshowdialog="confirm_delete">delete it</a>.</fb:message></fb:error>';
+} else { 
+?>
 
 <center>
 <form name="form1" enctype="multipart/form-data" method="post" action="<?php echo $config['server']['url']; ?>/?tab=enter&submit">
@@ -52,14 +140,6 @@ if (isset($error))
    <tr class="width_setter">
       <th style="width:100px"></th>
       <td></td>
-   </tr>
-
-   <tr>
-   <th><label>Name:</label></th>
-      <td class="editorkit_row">
-      <input name="name" type="text" size="32" />
-      </td>
-      <td class="right_padding"></td>
    </tr>
 
    <tr>
@@ -92,6 +172,11 @@ if (isset($error))
       </td>
       <td class="right_padding"></td>
    </tr>
+
+
+   <?php $api_call = $facebook->api('/me'); ?>
+   <input type="hidden" name="uid" value="<?php echo $user; ?>" />
+   <input type="hidden" name="name" value="<?php echo $api_call['name']; ?>" />
 
    <tr>
       <th></th>

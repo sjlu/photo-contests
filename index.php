@@ -1,28 +1,43 @@
 <?php include 'inc/config.php'; ?>
 
-<img src="<?php echo $config['server']['url']; ?>/img/main.png">
+<?php
+function renderButton($button, $select)
+{
+   $html = '<a href="?tab=' . $button . '">';
+   $html .= '<img src="' . $GLOBALS['app_config']['server']['url'] . '/img/' . $button;
+   if ($button == $select)
+      $html .= '-select';
+   $html .= '.png';
+   $html .= '" />';
+   $html .= '</a>';
+   
+   return $html;
+}
+?>
 
-<table border="0" cellspacing="0" cellpadding="0" style="margin-top: -34px;">
+<?php if (!isset($_GET['tab'])) $_GET['tab'] = 'details'; ?>
+
+<img src="<?php echo $config['server']['url']; ?>/img/main.jpg">
+
+<?php $buttons = array('details','enter','view','invite'); ?>
+
+<table border="0" cellspacing="1" cellpadding="0" style="margin-top: -34px;">
 <tr>
-   <td width="250px" style="border-right: 1px solid #575a7e">
-   </td>
-   <td style="border-right: 1px solid #575a7e">
-      <a href="?tab=details"><img src="<?php echo $config['server']['url']; ?>/img/details.png"></a>
-   </td>
-   <td style="border-right: 1px solid #575a7e">
-      <a href="?tab=enter"><img src="<?php echo $config['server']['url']; ?>/img/enter.png"></a>
-   </td>
-   <td style="border-right: 1px solid #575a7e">
-      <a href="?tab=view"><img src="<?php echo $config['server']['url']; ?>/img/view.png"></a>
-   </td>
-   <td style="border-right: 1px solid #575a7e">
-      <a href="?tab=invite"><img src="<?php echo $config['server']['url']; ?>/img/invite.png"></a>
-   </td>
+   <td width="260px"></td>
+   <?php
+   foreach ($buttons as $button)
+   {
+      $html = '<td>';
+      $html .= renderButton($button, $_GET['tab']);
+      $html .= '</td>';
+      echo $html;
+   }
+   ?>
 </tr>
 </table>
 
 
-<div style="width: 740px; border: 10px solid #1f2353; padding-top: 10px; background-color: #f7f7f7; margin-top: -3px;">
+<div style="width: 740px; border-left: 10px solid #1f2353;  border-right: 10px solid #1f2353;  border-bottom: 10px solid #1f2353; background-color: #f7f7f7; margin-top: -13px; padding-top: 10px">
 
 <div style="margin: 10px;">
 

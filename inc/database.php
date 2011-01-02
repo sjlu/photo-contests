@@ -50,26 +50,29 @@ class BurstMySQL {
       return $mReturnData;
    }
 
-   public function addEntry($uid, $name, $email, $reason)
+   public function getEntry($uid)
    {
-      if (empty($uid) || empty($name) || empty($email) || empty($reason))
-         return false;
+      $entry = $this->Raw("SELECT * FROM `entries` WHERE `uid`='$uid' LIMIT 1");
+      return $entry[0];
+   }
 
-      if (!is_int($uid))
-         return false;
+   public function getEntries($beg, $mod_status=0)
+   {
+      return $this->Raw("SELECT * FROM `entries` WHERE `mod_status`='$mod_status' ORDER BY `id` LIMIT $beg,9");
+   }
 
+   public function addEntry($uid, $ext, $name, $email, $reason)
+   {
       $name = mysql_real_escape_string($name);
       $email = mysql_real_escape_string($email);
       $reason = mysql_real_escape_string($reason);
 
-      $this->Raw("INSERT INTO `entries` (`uid`,`name`,`email`,`reason`,`mod_status`) VALUES ('$uid','$name','$email','$reason','0')");
+      $this->Raw("INSERT INTO `entries` (`uid`,`ext`, `name`,`email`,`reason`,`mod_status`) VALUES ('$uid','$ext','$name','$email','$reason','0')");
+      return true;
    }
 
    public function checkEntryExists($uid)
    {
-      if (!is_int($uid))
-         return false;
-
       $db_call = $this->Raw("SELECT COUNT(*) FROM `entries` WHERE `uid`='$uid'");
       if ($db_call[0]['COUNT(*)'] > 0)
          return true;
@@ -79,14 +82,22 @@ class BurstMySQL {
 
    public function approveMod($uid)
    {
-      if (!is_int($uid))
-         return false;
-
       if ($this->checkEntryExists($uid))
       {
          $this->Raw("UPDATE `entries` SET `mod_status`='1' WHERE `uid`='$uid'");
          return true;
       }   
+
+      return false;
+   }
+
+   public function deleteEntry($uid)
+   {
+      if ($this->checkEntryExists($uid))
+      {
+         $this->Raw("DELETE FROM `entries` WHERE `uid`='$uid' LIMIT 1");
+         return true;
+      }
 
       return false;
    }

@@ -32,6 +32,28 @@ $config['db']['username'] = 'discoveryapp';
 $config['db']['password'] = 'K2wRu2epRuXEWAKEd25Traf4';
 $config['db']['table'] = 'discoveryapp';
 
+// a list of admins
+$config['admins'] = array();
+
+// the rest of this stuff shouldn't be touched
 $db = new BurstMySQL($config['db']['host'], $config['db']['username'], $config['db']['password'], $config['db']['table']);
+
+$facebook = new Facebook(array(
+   'appId' => $config['fb']['appId'],
+   'secret' => $config['fb']['secret'],
+   'cookie' => true,
+));
+
+$session = $facebook->getSession();
+
+if ($session)
+   $user = $facebook->getUser();
+else
+   echo '<fb:redirect url="' . $facebook->getLoginUrl(array('canvas' => 1, 'fbconnect' => 0)) . '" />';
+
+if (in_array($user, $config['admins']))
+   $config['admin'] = true;
+
+$GLOBALS['app_config'] = $config;
 
 ?>
