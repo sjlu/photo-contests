@@ -17,7 +17,22 @@ function renderButton($button, $select)
 
 <?php if (!isset($_GET['tab'])) $_GET['tab'] = 'details'; ?>
 
-<img src="<?php echo $config['server']['url']; ?>/img/main.jpg">
+<table border=0 cellspacing=0 cellpadding==0 style="margin-bottom: -3px;">
+<tr>
+   <td>
+      <img src="<?php echo $config['server']['url']; ?>/img/main-top.jpg" />
+   </td>
+   <td>
+      <a href="?tab=details&rules#rules"><img src="<?php echo $config['server']['url']; ?>/img/main-rules.jpg" border="0"/></a>
+   </td>
+   <td>
+      <a href="?tab=details&rules"><img src="<?php echo $config['server']['url']; ?>/img/main-privacy.jpg" /></a>
+   </td>
+</tr>
+</table>
+   
+
+<img src="<?php echo $config['server']['url']; ?>/img/main-bottom.jpg" />
 
 <?php $buttons = array('details','enter','view','invite'); ?>
 

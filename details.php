@@ -23,3 +23,11 @@
    <li>4th place: $50</li>
 </blockquote>
 </div>
+
+
+<div style="font-size: 22px; font-weight: bold; margin-bottom: 8px;">
+<a clicktotoggle="rules">View Official Rules & Privacy Policy</a>
+</div>
+<div id="rules" style="margin-left: 15px; font-size: 12px; <?php if(!isset($_GET['rules'])) echo 'display:none;'; ?>">
+<?php include_once('rules.txt'); ?>
+</div>
