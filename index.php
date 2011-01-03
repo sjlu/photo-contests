@@ -23,10 +23,7 @@ function renderButton($button, $select)
       <img src="<?php echo $config['server']['url']; ?>/img/main-top.jpg" />
    </td>
    <td>
-      <a href="?tab=details&rules#rules"><img src="<?php echo $config['server']['url']; ?>/img/main-rules.jpg" border="0"/></a>
-   </td>
-   <td>
-      <a href="?tab=details&rules"><img src="<?php echo $config['server']['url']; ?>/img/main-privacy.jpg" /></a>
+      <a href="?tab=details&rules"><img src="<?php echo $config['server']['url']; ?>/img/main-rules.jpg" border="0"/></a>
    </td>
 </tr>
 </table>
