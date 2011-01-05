@@ -83,7 +83,7 @@ if (isset($_GET['submit'])) {
    {
       $error = 'You did not provide us a valid email address.';
    }
-   else if (!in_array(strtolower(substr($_FILES['upfile']['name'], strrpos($_FILES['upfile']['name'], '.') + 1)), array('gif','png','jpg')))
+   else if (!in_array(strtolower(substr($_FILES['upfile']['name'], strrpos($_FILES['upfile']['name'], '.') + 1)), array('gif','png','jpg','jpeg')))
    {
       $error = 'The file you gave us does not seem to be an image.';
    }
@@ -96,6 +96,13 @@ if (isset($_GET['submit'])) {
    {
       $ext =  strtolower(substr($_FILES['upfile']['name'], strrpos($_FILES['upfile']['name'], '.') + 1));
       rename($_FILES['upfile']['tmp_name'], 'user_content/' . $_POST['uid'] . '.' . $ext);
+     
+      include('inc/SimpleImage.php'); 
+      $image = new SimpleImage();
+      $image->load('user_content/' . $_POST['uid'] . '.' . $ext);
+      $image->resizeToWidth(300);
+      $image->save('user_content/' . $_POST['uid'] . '.' . $ext);
+      
       $db->addEntry($_POST['uid'],$ext, $_POST['name'],$_POST['email'],$_POST['reason']);
 //      $db->Raw("INSERT INTO `entries` (`uid`,`name`,`email`,`reason`,`mod_status`) VALUES ('$_POST[uid]','$_POST[name]','$_POST[email]','$_POST[reason]','0')");
       header('Location: ' . $config['fb']['url'] . '/?tab=enter&success');

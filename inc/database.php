@@ -58,7 +58,7 @@ class BurstMySQL {
 
    public function getEntries($beg, $mod_status=0)
    {
-      return $this->Raw("SELECT * FROM `entries` WHERE `mod_status`='$mod_status' ORDER BY `id` LIMIT $beg,9");
+      return $this->Raw("SELECT * FROM `entries` WHERE `mod_status`='$mod_status' ORDER BY `id`");
    }
 
    public function addEntry($uid, $ext, $name, $email, $reason)
