@@ -56,9 +56,15 @@ class BurstMySQL {
       return $entry[0];
    }
 
-   public function getEntries($beg, $mod_status=0)
+   public function getEntries($beg, $num=12, $mod_status=0)
    {
       return $this->Raw("SELECT * FROM `entries` WHERE `mod_status`='$mod_status' ORDER BY `id`");
+   }
+
+   public function getEntriesCount()
+   {
+      $call = $this->Raw("SELECT COUNT(*) FROM `entries`");
+      return $call[0]['COUNT(*)'];
    }
 
    public function addEntry($uid, $ext, $name, $email, $reason)

@@ -86,6 +86,10 @@ else
       <?php } ?>
    <?php } ?>
 
+   <?php if (!isset($_GET['page'])) $_GET['page'] = 0; ?>
+   <?php $count = $db->getEntriesCount(); ?>
+   <?php if ($_GET['page'] !== 0) $pagination = '<a href="?tab=view&page=' . $_GET['page']-1 . '">Previous</a>'; ?> 
+
    <?php
    echo displayEntries($db->getEntries(0));
    ?>
