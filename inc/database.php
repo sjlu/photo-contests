@@ -17,13 +17,15 @@ class BurstMySQL {
    var $mDBName;
    var $mQueries = array();
    var $mTotal=0;
+   var $mTableName;
 
-   public function __construct ($mHost, $mUser, $mPass, $mDatabase, 
+   public function __construct ($mHost, $mUser, $mPass, $mDatabase, $mTable,
                                  $mPort=3306) {
       $this->mConnection = @mysql_connect($mHost . ':' . $mPort, $mUser, $mPass)
                                           or $this->OnError();
       $this->mDBName = $mDatabase;
       mysql_select_db ($mDatabase, $this->mConnection);
+      $this->mTableName = $mTable;
    }
 
    public function OnError ($mQuery) {
@@ -50,20 +52,25 @@ class BurstMySQL {
       return $mReturnData;
    }
 
+   public function createTable($table_name)
+   {
+      $this->Raw("CREATE TABLE IF NOT EXISTS `discoveryapp`.`" . $table_name . "` (`id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, `uid` BIGINT(64) NOT NULL, `ext` VARCHAR(4) NOT NULL, `name` VARCHAR(255) NOT NULL, `email` VARCHAR(255) NOT NULL, `reason` TEXT NOT NULL, `mod_status` TINYINT(1) NOT NULL, UNIQUE (`uid`)) ENGINE = MyISAM;"); 
+   }
+
    public function getEntry($uid)
    {
-      $entry = $this->Raw("SELECT * FROM `entries` WHERE `uid`='$uid' LIMIT 1");
+      $entry = $this->Raw("SELECT * FROM `" . $this->mTableName . "` WHERE `uid`='$uid' LIMIT 1");
       return $entry[0];
    }
 
    public function getEntries($beg, $num=12, $mod_status=0)
    {
-      return $this->Raw("SELECT * FROM `entries` WHERE `mod_status`='$mod_status' ORDER BY `id`");
+      return $this->Raw("SELECT * FROM `" . $this->mTableName . "` WHERE `mod_status`='$mod_status' ORDER BY `id`");
    }
 
    public function getEntriesCount()
    {
-      $call = $this->Raw("SELECT COUNT(*) FROM `entries`");
+      $call = $this->Raw("SELECT COUNT(*) FROM `" . $this->mTableName . "`");
       return $call[0]['COUNT(*)'];
    }
 
@@ -73,13 +80,13 @@ class BurstMySQL {
       $email = mysql_real_escape_string($email);
       $reason = mysql_real_escape_string($reason);
 
-      $this->Raw("INSERT INTO `entries` (`uid`,`ext`, `name`,`email`,`reason`,`mod_status`) VALUES ('$uid','$ext','$name','$email','$reason','0')");
+      $this->Raw("INSERT INTO `" . $this->mTableName . "` (`uid`,`ext`, `name`,`email`,`reason`,`mod_status`) VALUES ('$uid','$ext','$name','$email','$reason','0')");
       return true;
    }
 
    public function checkEntryExists($uid)
    {
-      $db_call = $this->Raw("SELECT COUNT(*) FROM `entries` WHERE `uid`='$uid'");
+      $db_call = $this->Raw("SELECT COUNT(*) FROM `" . $this->mTableName . "` WHERE `uid`='$uid'");
       if ($db_call[0]['COUNT(*)'] > 0)
          return true;
 
@@ -90,7 +97,7 @@ class BurstMySQL {
    {
       if ($this->checkEntryExists($uid))
       {
-         $this->Raw("UPDATE `entries` SET `mod_status`='1' WHERE `uid`='$uid'");
+         $this->Raw("UPDATE `" . $this->mTableName . "` SET `mod_status`='1' WHERE `uid`='$uid'");
          return true;
       }   
 
@@ -101,7 +108,7 @@ class BurstMySQL {
    {
       if ($this->checkEntryExists($uid))
       {
-         $this->Raw("DELETE FROM `entries` WHERE `uid`='$uid' LIMIT 1");
+         $this->Raw("DELETE FROM `" . $this->mTableName . "` WHERE `uid`='$uid' LIMIT 1");
          return true;
       }
 

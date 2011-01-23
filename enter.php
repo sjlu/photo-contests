@@ -141,6 +141,7 @@ if ($db->checkEntryExists($user)) {
 } else { 
 ?>
 
+<?php if ($config['app']['checkAge']) echo '<fb:18-plus>'; ?>
 <center>
 <form name="form1" enctype="multipart/form-data" method="post" action="<?php echo $config['server']['url']; ?>/?tab=enter&submit">
 <table class="editorkit" border="0" cellspacing="0" style="margin-top: 10px; width:400px; border: 1px solid #000000; padding: 10px; background-color: #ffffff;">
@@ -196,6 +197,7 @@ if ($db->checkEntryExists($user)) {
 </table>
 </form>
 </center>
+<?php if ($config['app']['checkAge']) echo '<fb:else><fb:error><fb:message>You must be 18 years or older to enter this contest</fb:message></fb:error></fb:else></fb:18-plus>'; ?>
 
 <?php } ?>
 <?php } ?>

@@ -33,7 +33,7 @@ function renderButton($button, $select)
 
 <?php $buttons = array('details','enter','view','invite'); ?>
 
-<table border="0" cellspacing="1" cellpadding="0" style="margin-top: -34px;">
+<table border="0" cellspacing="1" cellpadding="0" style="margin-top: <?php echo $config['app']['bar-top']; ?>; margin-right: <?php echo $config['app']['bar-right']; ?>;">
 <tr>
    <td width="260px"></td>
    <?php
@@ -49,7 +49,7 @@ function renderButton($button, $select)
 </table>
 
 
-<div style="width: 740px; border-left: 10px solid #1f2353;  border-right: 10px solid #1f2353;  border-bottom: 10px solid #1f2353; background-color: #f7f7f7; margin-top: -13px; padding-top: 10px">
+<div style="width: 740px; border-left: 10px solid <?php echo $config['app']['borderColor']; ?>;  border-right: 10px solid <?php echo $config['app']['borderColor']; ?>;  border-bottom: 10px solid <?php echo $config['app']['borderColor']; ?>; background-color: #f7f7f7; margin-top: -13px; padding-top: 10px">
 
 <div style="margin: 10px;">
 

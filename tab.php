@@ -16,6 +16,7 @@
    <fb:visible-to-connection>
       <a href="<?php echo $config['fb']['url']; ?>">
          <img src="<?php echo $config['server']['url']; ?>/img/tab-fan.jpg" />
+         Click the image to view the contest!
       </a>
    <fb:else>
       <div id="non-fans">
