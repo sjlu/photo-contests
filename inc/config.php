@@ -29,13 +29,13 @@ $config['app']['bar-right'] = '10px';
 $config['app']['bar-top'] = '-44px';
 
 // Facebook configuration values
-$config['fb']['appId'] = '136285896435221';
-$config['fb']['apiKey'] = 'b48e75f2567d09bdd72925d46fb9dd62';
-$config['fb']['secret'] = '33e2abaf759f42e33f75f3b2f00b10a6';
-$config['fb']['url'] = 'http://apps.facebook.com/burst-promo';
+$config['fb']['appId'] = '183872571635161';
+$config['fb']['apiKey'] = '681aff493767679d9ab822b0a477e626';
+$config['fb']['secret'] = 'e96e9f4add7fb8303cf79d2d7d15fc2e';
+$config['fb']['url'] = 'http://apps.facebook.com/discoveryapp-val';
 
 // server configuration
-$config['server']['url'] = 'http://apps.burst-dev.com/burst-promo';
+$config['server']['url'] = 'http://apps.burst-dev.com/discoveryapp-val';
 
 // database config
 $config['db']['host'] = 'localhost';
