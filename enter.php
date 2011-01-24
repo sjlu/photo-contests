@@ -174,7 +174,7 @@ if ($db->checkEntryExists($user)) {
       <td class="right_padding"></td>
    </tr>
 
-   <th><label>Why'd you choose this outfit? (< 50 words)</label></th>
+   <th><label>Why are you guys the cutest couple? (< 50 words)</label></th>
       <td class="editorkit_row">
       <textarea cols="40" rows="4" name="reason" type="textbox" />
       </td>
