@@ -27,6 +27,7 @@ $config['app']['checkAge'] = 1;
 $config['app']['borderColor'] = '#4e001a';
 $config['app']['bar-right'] = '10px';
 $config['app']['bar-top'] = '-44px';
+$config['app']['enter-text'] = 'Why are you guys the cutest couple?';
 
 // Facebook configuration values
 $config['fb']['appId'] = '136285896435221';
