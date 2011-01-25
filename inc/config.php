@@ -23,6 +23,7 @@ include 'database.php';
 $config = array();
 
 // Application configuration values.
+$config['app']['name'] = 'Kevin Levrone Contest';
 $config['app']['checkAge'] = 1;
 $config['app']['borderColor'] = '#9d0a0e';
 $config['app']['bar-right'] = '0';
