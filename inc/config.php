@@ -30,13 +30,13 @@ $config['app']['bar-top'] = '-34px';
 $config['app']['enter-text'] = 'Why do you need Kevin Levrone\'s help?';
 
 // Facebook configuration values
-$config['fb']['appId'] = '136285896435221';
-$config['fb']['apiKey'] = 'b48e75f2567d09bdd72925d46fb9dd62';
-$config['fb']['secret'] = '33e2abaf759f42e33f75f3b2f00b10a6';
-$config['fb']['url'] = 'http://apps.facebook.com/burst-promo';
+$config['fb']['appId'] = '191507040876358';
+$config['fb']['apiKey'] = '68601a74711c437819ab0e32d9897066';
+$config['fb']['secret'] = '368c1b19209e3d0559c29f8b7eac0ffd';
+$config['fb']['url'] = 'http://apps.facebook.com/klevrone';
 
 // server configuration
-$config['server']['url'] = 'http://apps.burst-dev.com/burst-promo';
+$config['server']['url'] = 'http://apps.burst-dev.com/klevrone';
 
 // database config
 $config['db']['host'] = 'localhost';
