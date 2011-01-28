@@ -33,7 +33,7 @@ $config['db']['password'] = 'K2wRu2epRuXEWAKEd25Traf4';
 $config['db']['table'] = 'discoveryapp';
 
 // a list of admins
-$config['admins'] = array();
+$config['admins'] = array('1340490250','621556393');
 
 // the rest of this stuff shouldn't be touched
 $db = new BurstMySQL($config['db']['host'], $config['db']['username'], $config['db']['password'], $config['db']['table']);

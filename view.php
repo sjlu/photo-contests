@@ -20,6 +20,8 @@ function viewEntry($entry)
    $html.= 'height=' . $height . ' width=' . $width . ' />';
    $html.= '</td><td style="padding-left: 10px">';
    $html.= '<div style="font-size: 22px; font-weight: bold"><fb:name uid="' . $entry['uid'] . '" firstnameonly=1 linked=0 reflexive=0 /></div>';
+   if ($GLOBALS['app_config']['admin'])
+      $html.='<div style="font-size: 18px;"><a href="mailto:' . $entry['email'] . '">' . $entry['email'] . '</a></div>';
    $html.= '<div style="font-size: 16px">' . $entry['reason'] . '</div>';
    $html.= '</td>';
    $html.= '</tr></table>';
