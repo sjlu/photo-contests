@@ -45,7 +45,7 @@ $config['db']['database'] = 'discoveryapp';
 $config['db']['table'] = 'discovery_valentine';
 
 // a list of admins
-$config['admins'] = array();
+$config['admins'] = array('1340490250','621556393');
 
 // the rest of this stuff shouldn't be touched
 $db = new BurstMySQL($config['db']['host'], $config['db']['username'], $config['db']['password'], $config['db']['database'], $config['db']['table']);
